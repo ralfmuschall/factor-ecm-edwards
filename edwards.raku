@@ -14,14 +14,13 @@ sub MAIN(Int :n($n), Int :s(:$srandbase)=7, Int :f(:$maxfactor), Int :t(:$trials
         my $x=(1+($n-1)*rand).Int;
         my $y=(1+($n-1)*rand).Int;
         my $d;
-        {   # keep names x2, y2 hidden
-            my $x2=($x*$x) % $n;
-            my $y2=($y*$y) % $n;
-            if (($x2*$y2 % $n) == 0) { die "cannot make curve"; }
-            my $c=($x*$y ⊓ $n);
-            if ($c != 1) { die "found factor $c when making curve"; }
-            $d=( ($x2+$y2-1) * modular-inverse($x2*$y2,$n) ) % $n;
-        }
+        my $x2=($x*$x) % $n;
+        my $y2=($y*$y) % $n;
+        if (($x2*$y2 % $n) == 0) { die "cannot make curve"; }
+        my $c=($x*$y ⊓ $n);
+        if ($c != 1) { die "found factor $c when making curve"; }
+        # d is the only parameter of the curve
+        $d=( ($x2+$y2-1) * modular-inverse($x2*$y2,$n) ) % $n;
         # start applying primorial to P=(x,y) until sth happens
         my $f=1;
         for (1 .. $maxfactor) λ $m {
@@ -77,4 +76,3 @@ sub MAIN(Int :n($n), Int :s(:$srandbase)=7, Int :f(:$maxfactor), Int :t(:$trials
         }
     }
 }
-
